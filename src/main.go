@@ -1,13 +1,18 @@
 package main
 
-import "github.com/labstack/echo/v4"
+import (
+	"github.com/RubenPari/tracksByPopularity/src/utils"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
+	"github.com/labstack/echo/v4"
+)
 
 func main() {
 	server := echo.New()
 
-	server.GET("/", func(c echo.Context) error {
-		return c.String(200, "Hello World!")
-	})
+	// Set up session
+	server.Use(session.Middleware(sessions.NewCookieStore([]byte(utils.RandomString(64)))))
 
+	// Run server
 	server.Logger.Fatal(server.Start(":8080"))
 }
